@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+    <ogc:And>
+        <ogc:PropertyIsEqualTo>
+            <ogc:PropertyName>name</ogc:PropertyName>
+            <ogc:Literal>tstark</ogc:Literal>
+        </ogc:PropertyIsEqualTo>
+        <ogc:PropertyIsLike wildCard="*" singleChar="_" escapeChar="%">
+            <ogc:PropertyName>about</ogc:PropertyName>
+            <ogc:Literal>has alias</ogc:Literal>
+        </ogc:PropertyIsLike>
+    </ogc:And>
+</ogc:Filter>

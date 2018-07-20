@@ -7,6 +7,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 
 public class TestFunction implements Function {
   public static final FunctionName NAME =
@@ -49,7 +50,13 @@ public class TestFunction implements Function {
 
   @Override
   public <T> T evaluate(Object object, Class<T> context) {
-    Object wrappedValue = parameters.get(0).evaluate(object);
+    Object wrappedValue;
+    Expression wrappedExpression = parameters.get(0);
+    if (wrappedExpression instanceof PropertyName) {
+      wrappedValue = wrappedExpression.toString();
+    } else {
+      wrappedValue = wrappedExpression.evaluate(object, context);
+    }
     if (context.isInstance(wrappedValue)) {
       return context.cast(wrappedValue);
     }

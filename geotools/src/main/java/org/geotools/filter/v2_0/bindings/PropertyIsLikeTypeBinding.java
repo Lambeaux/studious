@@ -1,13 +1,16 @@
 package org.geotools.filter.v2_0.bindings;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
-import org.geotools.filter.LikeExpressionImpl;
+import org.geotools.filter.LikeFesFilterImpl;
 import org.geotools.filter.v1_0.OGCPropertyIsLikeTypeBinding;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -41,8 +44,6 @@ public class PropertyIsLikeTypeBinding extends OGCPropertyIsLikeTypeBinding {
 
   @Override
   public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-    PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
-
     String wildcard = (String) node.getAttributeValue("wildCard");
     String single = (String) node.getAttributeValue("singleChar");
     String escape = (String) node.getAttributeValue("escape");
@@ -57,25 +58,47 @@ public class PropertyIsLikeTypeBinding extends OGCPropertyIsLikeTypeBinding {
       escape = (String) node.getAttributeValue("escapeChar");
     }
 
-    // (CODICE) With the 2.0 schema, must support "expression" on RHS
-    Function valueExpression = (Function) node.getChildValue(Function.class);
-    if (valueExpression != null) {
-      LikeExpressionImpl likeExpression = new LikeExpressionImpl(valueExpression);
-      likeExpression.setExpression(name);
-      likeExpression.setLiteral(valueExpression.evaluate(valueExpression).toString());
+    // With the 2.0 schema, must support "expression" on RHS
+    List<?> childValues = node.getChildValues(Function.class);
+    List<Function> functions =
+        childValues
+            .stream()
+            .filter(Function.class::isInstance)
+            .map(Function.class::cast)
+            .collect(Collectors.toList());
 
-      likeExpression.setMatchCase(matchCase);
-
-      likeExpression.setWildCard(wildcard);
-      likeExpression.setSingleChar(single);
-      likeExpression.setEscape(escape);
-
-      return valueExpression;
+    if (functions.size() == 2) {
+      return createFesLike(functions.get(0), functions.get(1), matchCase, wildcard, single, escape);
     }
+
+    PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
     Literal literal = (Literal) node.getChildValue(Literal.class);
 
-    // (CODICE) With the 2.0 schema, "literal" can be null
-    String pattern = (literal == null) ? null : literal.toString();
-    return factory.like(name, pattern, wildcard, single, escape, matchCase);
+    if (name == null) {
+      return createFesLike(functions.get(0), literal, matchCase, wildcard, single, escape);
+    }
+
+    if (literal == null) {
+      return createFesLike(name, functions.get(0), matchCase, wildcard, single, escape);
+    }
+
+    return factory.like(name, literal.toString(), wildcard, single, escape, matchCase);
+  }
+
+  private Object createFesLike(
+      Expression propertyExpression,
+      Expression valueExpression,
+      boolean matchCase,
+      String wildcard,
+      String single,
+      String escape) {
+    LikeFesFilterImpl like = new LikeFesFilterImpl(valueExpression);
+    like.setExpression(propertyExpression);
+    like.setLiteral(valueExpression.evaluate(valueExpression).toString());
+    like.setMatchCase(matchCase);
+    like.setWildCard(wildcard);
+    like.setSingleChar(single);
+    like.setEscape(escape);
+    return like;
   }
 }

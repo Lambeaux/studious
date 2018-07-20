@@ -22,9 +22,11 @@ import org.opengis.filter.FilterFactory;
  * @generated
  */
 public class AndBinding extends OGCAndBinding {
+  private FilterFactory factory;
 
   public AndBinding(FilterFactory filterfactory) {
     super(filterfactory);
+    this.factory = filterfactory;
   }
 
   public QName getTarget() {
@@ -33,6 +35,8 @@ public class AndBinding extends OGCAndBinding {
 
   @Override
   public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-    return node.getChildValues(Object.class);
+    //    List children = node.getChildren();
+    //    return factory.and(children);
+    return super.parse(instance, node, value);
   }
 }

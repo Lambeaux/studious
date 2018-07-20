@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fes:Filter xmlns:fes="http://www.opengis.net/fes/2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd">
+    <fes:And>
+        <fes:PropertyIsEqualTo matchCase="false">
+            <fes:ValueReference>owner</fes:ValueReference>
+            <fes:Function name="net.lambeaux.test">
+                <fes:Literal>tstark</fes:Literal>
+                <fes:Literal>srogers</fes:Literal>
+                <fes:Function name="net.lambeaux.test">
+                    <fes:Literal>mbates</fes:Literal>
+                    <fes:Literal>jseinfield</fes:Literal>
+                </fes:Function>
+            </fes:Function>
+        </fes:PropertyIsEqualTo>
+
+        <fes:Intersects>
+            <fes:ValueReference>location</fes:ValueReference>
+            <fes:Function name="net.lambeaux.test">
+                <fes:Literal>WKT(4.552395 8.3899828)</fes:Literal>
+                <fes:Function name="net.lambeaux.test">
+                    <fes:Literal>10</fes:Literal>
+                    <fes:Literal>22</fes:Literal>
+                </fes:Function>
+            </fes:Function>
+        </fes:Intersects>
+
+        <fes:DWithin>
+            <fes:ValueReference>location</fes:ValueReference>
+            <fes:Function name="net.lambeaux.test">
+                <fes:Literal>WKT(4.552395 8.3899828)</fes:Literal>
+            </fes:Function>
+            <fes:Distance uom="km">10</fes:Distance>
+        </fes:DWithin>
+
+        <fes:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
+            <fes:ValueReference>name</fes:ValueReference>
+            <fes:Literal>Bob</fes:Literal>
+        </fes:PropertyIsLike>
+
+        <fes:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
+            <fes:ValueReference>alias</fes:ValueReference>
+            <fes:Function name="net.lambeaux.test">
+                <fes:Literal>standard</fes:Literal>
+                <fes:Literal>fixed</fes:Literal>
+                <fes:Literal>temp</fes:Literal>
+            </fes:Function>
+        </fes:PropertyIsLike>
+
+        <fes:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
+            <fes:Function name="net.lambeaux.test">
+                <fes:ValueReference>name</fes:ValueReference>
+                <fes:Literal>2</fes:Literal>
+                <fes:Literal>extra</fes:Literal>
+            </fes:Function>
+            <fes:Literal>true</fes:Literal>
+        </fes:PropertyIsLike>
+
+        <fes:PropertyIsLike wildCard="*" singleChar="%" escapeChar="\">
+            <fes:Function name="net.lambeaux.test">
+                <fes:Literal>name</fes:Literal>
+            </fes:Function>
+            <fes:Function name="net.lambeaux.test">
+                <fes:Literal>true</fes:Literal>
+            </fes:Function>
+        </fes:PropertyIsLike>
+
+    </fes:And>
+</fes:Filter>

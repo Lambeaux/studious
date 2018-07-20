@@ -7,14 +7,14 @@ import org.opengis.filter.expression.Expression;
  * right hand side, in accordance to the Filter 2.0 schema. Permits visitors to traverse a function
  * chain if necessary.
  */
-public class LikeExpressionImpl extends LikeFilterImpl {
+public class LikeFesFilterImpl extends LikeFilterImpl {
   private final Expression valueExpression;
 
-  public LikeExpressionImpl(Expression valueExpression) {
+  public LikeFesFilterImpl(Expression valueExpression) {
     this.valueExpression = valueExpression;
   }
 
-  public LikeExpressionImpl(
+  public LikeFesFilterImpl(
       Expression expr,
       String pattern,
       String wildcardMulti,
@@ -25,12 +25,12 @@ public class LikeExpressionImpl extends LikeFilterImpl {
     this.valueExpression = valueExpression;
   }
 
-  public LikeExpressionImpl(MatchAction matchAction, Expression valueExpression) {
+  public LikeFesFilterImpl(MatchAction matchAction, Expression valueExpression) {
     super(matchAction);
     this.valueExpression = valueExpression;
   }
 
-  public LikeExpressionImpl(
+  public LikeFesFilterImpl(
       Expression expr,
       String pattern,
       String wildcardMulti,

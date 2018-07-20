@@ -18,17 +18,7 @@
             <fes:Function name="net.lambeaux.test">
                 <fes:Literal>arg</fes:Literal>
             </fes:Function>
-            <!--<fes:Literal>Bob</fes:Literal>-->
         </fes:PropertyIsLike>
 
-        <!--<fes:PropertyIsLessThanOrEqualTo matchCase="false">-->
-            <!--<fes:ValueReference>popularity</fes:ValueReference>-->
-            <!--<fes:Function name="template.value.v1">-->
-                <!--<fes:Literal>0.78</fes:Literal>-->
-                <!--<fes:Literal>my-id-1</fes:Literal>-->
-                <!--<fes:Literal>true</fes:Literal>-->
-                <!--<fes:Literal>false</fes:Literal>-->
-            <!--</fes:Function>-->
-        <!--</fes:PropertyIsLessThanOrEqualTo>-->
     </fes:And>
 </fes:Filter>
